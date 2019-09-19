@@ -21,43 +21,44 @@ GO
 
 -- Adding a second table with a foreign key
 
-/****** Object:  Table [dbo].[Books]    Script Date: 19/09/2019 12:04:39 ******/
+/****** Object:  Table [dbo].[TypesOfBird]    Script Date: 19/09/2019 12:04:39 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[Books](
-	[BookID] [INT] NOT NULL,
-	[BookName] [NVARCHAR](250) NOT NULL,
-	[Year] [SMALLINT] NOT NULL,
-	[AuthorID] [INT] NOT NULL,
- CONSTRAINT [PK_Books] PRIMARY KEY CLUSTERED 
+CREATE TABLE [dbo].[TypeOfBirds](
+	[TypeId] [INT] NOT NULL,
+	[BirdGroupId] [INT] NOT NULL,
+	[BirdGroup] [nvarchar(50)] NOT NULL,
+	[BirdGroupName] [nvarchar(50)] NOT NULL,
+ CONSTRAINT [PK_TypeId] PRIMARY KEY CLUSTERED 
 (
 	[BookID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[Books]  WITH CHECK ADD  CONSTRAINT [FK_Books_Authors] FOREIGN KEY([AuthorID])
-REFERENCES [dbo].[Authors] ([AuthorID])
+ALTER TABLE [dbo].[TypeOfBirds]  WITH CHECK ADD  CONSTRAINT [FK_TypesOfBird_BirdGroupId] FOREIGN KEY([AuthorID])
+REFERENCES [dbo].[BirdTypes] ([BirdId])
 GO
 
-ALTER TABLE [dbo].[Books] CHECK CONSTRAINT [FK_Books_Authors]
+ALTER TABLE [dbo].[TypeOfBirds] CHECK CONSTRAINT [FK_TypeOfBirds_BirdGroupId]
 GO
 
 -- Adding a view that joins both the tables
 
-/****** Object:  View [dbo].[vBooks]    Script Date: 19/09/2019 12:06:59 ******/
+/****** Object:  View [dbo].[vTypeOfBirds]    Script Date: 19/09/2019 12:06:59 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE VIEW [dbo].[vBooks] AS
-SELECT Authors.AuthorName, Books.BookName, Books.Year
-FROM dbo.Authors INNER JOIN dbo.Books
-ON Authors.AuthorID=Books.AuthorID
+CREATE VIEW [dbo].[vTypeOfBirds] AS
+SELECT   dbo.BirdTypes.TypesOfBird, dbo.BirdTypes.Description, dbo.TypesOfBirds.BirdGroup, dbo.TypesOfBirds.BirdGroupName
+FROM         dbo.BirdTypes INNER JOIN
+                         dbo.TypesOfBirds
+			 ON dbo.BirdTypes.BirdId = dbo.TypesOfBirds.BirdGroupId
 GO
